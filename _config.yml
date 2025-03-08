@@ -9,7 +9,7 @@
 # Basic Site Settings
 locale                   : "en-US"
 site_theme               : "default"
-title                    : "Hariharan's Website"
+title                    : "Hari's Website"
 title_separator          : "-"
 name                     : &name "Hariharan Sureshkumar"
 description              : &description "personal description"

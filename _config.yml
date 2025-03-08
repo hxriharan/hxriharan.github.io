@@ -22,14 +22,14 @@ repository               : "academicpages/academicpages.github.io"
 #               Additional customization can be done by editing /_includes/author-profile.html
 author:
   # Biographic information
-  avatar           : "profile.jpeg"
+  avatar           : "profile1.jpeg"
   name             : "Hariharan Sureshkumar"
   pronouns         : # example: "she/her"
-  bio              : "Short biography for the left-hand sidebar"
+  bio              : "Computer Vision, Robot Perception, 3D Vision"
   location         : "Boston, Massachusetts"
   employer         : "Northeastern University"
   uri              : # URL
-  email            : "none@example.org" 
+  email            : "lnu.harih@northeastern.edu" 
 
   # Academic websites
   arxiv            : # URL - Update with the correct link to your profile
@@ -45,12 +45,12 @@ author:
   bitbucket        : # Username - Update with your username on the site
   codepen          : # Username
   dribbble         : # Username
-  github           : "academicpages"
+  github           : "hxriharan"
   kaggle           : # Username  
   stackoverflow    : # User number or user number and name (i.e., use "1" or "1/jeff-atwood")    
 
   # Social media
-  bluesky          : "bsky.app" # Replace this with you Bluesky username
+  bluesky          : #"bsky.app" # Replace this with you Bluesky username
   facebook         : # Username
   flickr           : # Username
   foursquare       : # Username
@@ -59,7 +59,7 @@ author:
   keybase          : # Username
   instagram        : # Username
   lastfm           : # Username
-  linkedin         : "https://www.linkedin.com/in/hariharan-suresh/"
+  linkedin         : "hariharan-suresh"
   mastodon         : # URL
   medium           : # URL
   pinterest        : # Username
@@ -72,7 +72,7 @@ author:
   weibo            : # Username
   wikipedia        : # Username
   xing             : # Username
-  youtube          : # Username
+  youtube          : "hxriharan1"
   zhihu            : # Username
 
 # Publication Category - The following the list of publication categories and their headings

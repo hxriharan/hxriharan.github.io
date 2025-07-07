@@ -1876,8 +1876,8 @@
 	};
 
 
-	/* Copyright (c) 2012 the authors listed at the following URL, and/or
-	the authors of referenced articles or incorporated external code:
+	/* Copyright (c) 2012 the Authors: listed at the following URL, and/or
+	the Authors: of referenced articles or incorporated external code:
 	http://en.literateprograms.org/Quickhull_(Javascript)?action=history&offset=20120410175256
 
 	Permission is hereby granted, free of charge, to any person obtaining
@@ -1894,7 +1894,7 @@
 	THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND,
 	EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF
 	MERCHANTABILITY, FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT.
-	IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
+	IN NO EVENT SHALL THE Authors: OR COPYRIGHT HOLDERS BE LIABLE FOR ANY
 	CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION OF CONTRACT,
 	TORT OR OTHERWISE, ARISING FROM, OUT OF OR IN CONNECTION WITH THE
 	SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.

@@ -17,15 +17,6 @@ Previously, I was an R&D Intern at [Indrones Solutions](https://indrones.com/){:
 
 I earned my Bachelor of Technology in Computer Engineering from [DY Patil University](https://dypatil.edu/schools/ramrao-adik-institute-of-technology){:target="_blank"}, Navi Mumbai, with a focus on computer vision, machine learning, algorithms, and robotics. During my undergraduate studies, I co-authored two research papers: "Cygnus: A Vision-Based Drone System for Drowning Detection Using IoT", under the supervision of [Dr. Prasiddh Kismatkumar Trivedi](https://gsv.ac.in/faculties/dr-prasiddh-kismatkumar-trivedi/){:target="_blank"} and "Optimizing Computational Load and Energy Efficiency in UAV-Based Port Surveillance Systems", under the supervision of [Dr. Gajanan Birajdar](https://vidwan.inflibnet.ac.in/profile/179809){:target="_blank"}
 
----
-
-<p>
-  <strong>Visitor count:</strong><br />
-  <img src="https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fhxriharan.github.io&count_bg=%2379C83D&title_bg=%23555555&title=Visitors&edge_flat=false"/>
-</p>
-
-
-
 <!-- 
 A data-driven personal website
 ======

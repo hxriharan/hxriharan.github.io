@@ -25,7 +25,7 @@ author:
   avatar           : "profile1.jpeg"
   name             : "Hariharan Sureshkumar"
   pronouns         : # example: "she/her"
-  bio              : "Computer Vision, Robot Perception, 3D Vision"
+  bio              : "Computer Vision Research, Vision-Only Robotic Perception, 3D Vision"
   location         : "Boston, Massachusetts"
   employer         : "Northeastern University"
   uri              : # URL
@@ -35,7 +35,7 @@ author:
   arxiv            : # URL - Update with the correct link to your profile
   googlescholar    : "https://scholar.google.com/citations?user=3wVDt7wAAAAJ&hl=en"
   impactstory      : # URL
-  orcid            : # URL
+  orcid            : "https://orcid.org/0009-0006-0208-9207"
   semantic         : # URL
   pubmed           : # URL
   researchgate     : # URL

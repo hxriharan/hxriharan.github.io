@@ -7,7 +7,7 @@ excerpt: 'A UAV-based system for detecting unauthorized vessels in ports using i
 date: 2024-07-03
 venue: '2024 IEEE International Conference on Signal Processing, Communications and Computing (ICSPCC)'
 paperurl: '/files/uav-port-surveillance.pdf'
-citation: 'H. Sureshkumar<sup>*</sup>, S. Gharat, D. Ambre, L. Shetty, A. Kadam, D. Ansari, and G. Birajdar'
+citation: 'Hariharan Sureshkumar*, Shardul Gharat, Dhumravarna Ambre, Lavanya Shetty, Aniruddha Kadam, Danish Ansari, Gajanan Birajdar'
 ---
 
 This paper presents a UAV-based surveillance system that enhances maritime safety by detecting unauthorized vessel entries in restricted port areas. The system employs a combination of sensor fusion, image stitching, and deep learning-based object detection (YOLO with MobileNet 0.75) on edge devices like the Sipeed Maixduino K210.

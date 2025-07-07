@@ -7,7 +7,7 @@ excerpt: 'Cygnus is a vision-based drone system designed for real-time drowning 
 date: 2024-07-03
 venue: '2024 2nd International Conference on Recent Trends in Microelectronics, Automation, Computing and Communications Systems (ICMACC)'
 paperurl: '/files/cygnus-drowning-detection.pdf'
-citation: 'H. Sureshkumar*, D. Ambre, P. Trivedi.'
+citation: 'Dhumravarna Ambre; Hariharan Sureshkumar*; Prasiddh Trivedi'
 ---
 
 This paper presents Cygnus, an innovative UAV-based system designed to detect drowning incidents in real time using vision-based techniques. By fusing RGB and infrared imagery and deploying a YOLOv8 model on GAP8 edge microcontrollers onboard drones, Cygnus enables robust monitoring even in low-light or complex aquatic environments.

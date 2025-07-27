@@ -8,10 +8,11 @@ author_profile: true
 {% include base_path %}
 
 <div class="notice--info" style="margin-bottom: 2rem;">
-  <h1 style="margin-top: 0; font-size: 2.5rem;">Under Development</h1>
-  <p style="margin-bottom: 0; font-size: 1.2rem;">This projects section is currently under development. More projects and detailed information will be added soon!</p>
+  <h1 style="margin-top: 0; font-size: 2.5rem;">This section is still under development</h1>
+  <p style="margin-bottom: 0; font-size: 1.2rem;">Will be uploading new projects soon!</p>
 </div>
 
-{% for post in site.projects %}
+{% assign sorted_projects = site.projects | sort: 'date' | reverse %}
+{% for post in sorted_projects %}
   {% include archive-single.html %}
 {% endfor %} 

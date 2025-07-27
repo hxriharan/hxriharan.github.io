@@ -17,14 +17,15 @@ main:
   - title: "Projects"
     url: /projects/
     
-  - title: "Gallery"
-    url: /gallery/
         
   # - title: "Blog Posts"
   #   url: /year-archive/
     
   - title: "CV"
     url: /cv/
-    
+      
+  - title: "Gallery"
+    url: /gallery/
+
   # - title: "Guide"
   #   url: /markdown/

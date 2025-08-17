@@ -100,7 +100,11 @@
   // Display the current count
   function displayCount() {
     const count = getVisitCount();
-    animateNumber(document.getElementById('simpleGlobalCount'), count);
+    if (count > 0) {
+      animateNumber(document.getElementById('simpleGlobalCount'), count);
+    } else {
+      document.getElementById('simpleGlobalCount').textContent = '0';
+    }
   }
   
   // Increment the count and display it
@@ -191,6 +195,15 @@
   } else {
     initSimpleGlobalCounter();
   }
+  
+  // Fallback: if still loading after 3 seconds, show 0
+  setTimeout(() => {
+    const counterElement = document.getElementById('simpleGlobalCount');
+    if (counterElement && counterElement.textContent === 'Loading...') {
+      const count = getVisitCount();
+      counterElement.textContent = count.toString();
+    }
+  }, 3000);
 })();
 </script>
 {% endif %} 

@@ -1,0 +1,229 @@
+{% comment %}
+  Free Global Visit Counter Component
+  This component tracks global visits using a free external API service
+{% endcomment %}
+
+{% if site.visit_counter.enabled %}
+<div class="free-global-counter" id="freeGlobalCounter">
+  <div class="counter-container">
+    <span class="counter-text">Total Visits: </span>
+    <span class="counter-number" id="freeGlobalCount">Loading...</span>
+  </div>
+</div>
+
+<style>
+.free-global-counter {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2c3e50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.free-global-counter:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  background: #34495e;
+}
+
+.counter-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.counter-text {
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.counter-number {
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .free-global-counter {
+    top: 10px;
+    right: 10px;
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+  
+  .counter-number {
+    font-size: 16px;
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  const SITE_ID = 'hxriharan-website-' + Date.now(); // Unique site identifier
+  const API_BASE = 'https://api.jsonbin.io/v3/b'; // Free JSON storage service
+  
+  // Initialize global visit counter
+  function initFreeGlobalCounter() {
+    const counterElement = document.getElementById('freeGlobalCount');
+    if (!counterElement) return;
+    
+    // Check if we've already counted this session
+    const sessionKey = 'freeGlobalCounted_' + new Date().toDateString();
+    if (sessionStorage.getItem(sessionKey)) {
+      // Already counted today, just display the count
+      loadAndDisplayCount();
+      return;
+    }
+    
+    // Mark this session as counted
+    sessionStorage.setItem(sessionKey, 'true');
+    
+    // Increment and display the count
+    incrementAndDisplayCount();
+  }
+  
+  // Load and display the current count
+  async function loadAndDisplayCount() {
+    try {
+      const count = await getVisitCount();
+      animateNumber(document.getElementById('freeGlobalCount'), count);
+    } catch (error) {
+      console.error('Error loading visit count:', error);
+      // Fallback to localStorage
+      const localCount = localStorage.getItem('globalVisitCount') || '0';
+      animateNumber(document.getElementById('freeGlobalCount'), parseInt(localCount));
+    }
+  }
+  
+  // Increment the count and display it
+  async function incrementAndDisplayCount() {
+    try {
+      const newCount = await incrementVisitCount();
+      animateNumber(document.getElementById('freeGlobalCount'), newCount);
+    } catch (error) {
+      console.error('Error incrementing visit count:', error);
+      // Fallback to localStorage
+      const localCount = parseInt(localStorage.getItem('globalVisitCount') || '0') + 1;
+      localStorage.setItem('globalVisitCount', localCount.toString());
+      animateNumber(document.getElementById('freeGlobalCount'), localCount);
+    }
+  }
+  
+  // Get current visit count
+  async function getVisitCount() {
+    try {
+      // Try to get from localStorage first (faster)
+      const localCount = localStorage.getItem('globalVisitCount');
+      if (localCount) {
+        return parseInt(localCount);
+      }
+      
+      // If no local count, try to get from API
+      const response = await fetch(`${API_BASE}/latest`);
+      if (!response.ok) {
+        throw new Error(`API error: ${response.status}`);
+      }
+      
+      const data = await response.json();
+      const count = data.record?.count || 0;
+      
+      // Cache the count locally
+      localStorage.setItem('globalVisitCount', count.toString());
+      return count;
+    } catch (error) {
+      console.error('Error fetching visit count:', error);
+      return 0;
+    }
+  }
+  
+  // Increment visit count
+  async function incrementVisitCount() {
+    try {
+      const currentCount = await getVisitCount();
+      const newCount = currentCount + 1;
+      
+      // Update local storage immediately
+      localStorage.setItem('globalVisitCount', newCount.toString());
+      
+      // Try to update the API (non-blocking)
+      updateAPI(newCount).catch(console.error);
+      
+      return newCount;
+    } catch (error) {
+      console.error('Error incrementing visit count:', error);
+      // Fallback to localStorage only
+      const localCount = parseInt(localStorage.getItem('globalVisitCount') || '0') + 1;
+      localStorage.setItem('globalVisitCount', localCount.toString());
+      return localCount;
+    }
+  }
+  
+  // Update the API (non-blocking)
+  async function updateAPI(count) {
+    try {
+      const response = await fetch(`${API_BASE}`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          count: count,
+          lastUpdated: new Date().toISOString(),
+          siteId: SITE_ID
+        })
+      });
+      
+      if (!response.ok) {
+        throw new Error(`API update failed: ${response.status}`);
+      }
+      
+      console.log('Visit count updated successfully:', count);
+    } catch (error) {
+      console.error('Failed to update API:', error);
+    }
+  }
+  
+  // Animate number display
+  function animateNumber(element, finalValue) {
+    const startValue = 0;
+    const duration = 1000;
+    const startTime = performance.now();
+    
+    function updateNumber(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentValue = Math.floor(startValue + (finalValue - startValue) * easeOutQuart);
+      
+      element.textContent = currentValue.toLocaleString();
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateNumber);
+      }
+    }
+    
+    requestAnimationFrame(updateNumber);
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFreeGlobalCounter);
+  } else {
+    initFreeGlobalCounter();
+  }
+})();
+</script>
+{% endif %} 

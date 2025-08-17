@@ -363,3 +363,10 @@ compress_html:
   clippings: all
   ignore:
     envs: development
+
+# Visit Counter Settings
+visit_counter:
+  enabled: true
+  position: "floating" # "floating" or "footer"
+  show_icon: true
+  animation: true

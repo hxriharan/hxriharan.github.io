@@ -1,0 +1,233 @@
+{% comment %}
+  Advanced Visit Counter Component
+  This component provides detailed analytics including unique visitors, session tracking, and page-specific data
+{% endcomment %}
+
+{% if site.visit_counter.enabled %}
+<div class="advanced-visit-counter" id="advancedVisitCounter">
+  <div class="counter-stats">
+    <div class="stat-item">
+      <span class="stat-icon">👥</span>
+      <span class="stat-label">Total Visits:</span>
+      <span class="stat-value" id="totalVisits">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-icon">🆔</span>
+      <span class="stat-label">Unique Visitors:</span>
+      <span class="stat-value" id="uniqueVisitors">0</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-icon">📅</span>
+      <span class="stat-label">Today:</span>
+      <span class="stat-value" id="todayVisits">0</span>
+    </div>
+  </div>
+  <div class="counter-toggle" id="counterToggle">
+    <span class="toggle-icon">📊</span>
+  </div>
+</div>
+
+<style>
+.advanced-visit-counter {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: rgba(0, 0, 0, 0.9);
+  color: white;
+  border-radius: 15px;
+  z-index: 1000;
+  backdrop-filter: blur(15px);
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  overflow: hidden;
+  max-width: 300px;
+}
+
+.advanced-visit-counter.collapsed {
+  width: 50px;
+  height: 50px;
+}
+
+.advanced-visit-counter.collapsed .counter-stats {
+  display: none;
+}
+
+.counter-stats {
+  padding: 15px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.stat-item {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 13px;
+}
+
+.stat-icon {
+  font-size: 14px;
+  width: 20px;
+  text-align: center;
+}
+
+.stat-label {
+  flex: 1;
+  font-weight: 500;
+}
+
+.stat-value {
+  font-weight: bold;
+  color: #4CAF50;
+  min-width: 30px;
+  text-align: right;
+}
+
+.counter-toggle {
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 50px;
+  height: 50px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.counter-toggle:hover {
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.toggle-icon {
+  font-size: 18px;
+  transition: transform 0.3s ease;
+}
+
+.advanced-visit-counter.collapsed .toggle-icon {
+  transform: rotate(180deg);
+}
+
+@media (max-width: 768px) {
+  .advanced-visit-counter {
+    bottom: 10px;
+    right: 10px;
+    max-width: 250px;
+  }
+  
+  .stat-item {
+    font-size: 12px;
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Advanced visit counter functionality
+  function initAdvancedVisitCounter() {
+    const counterElement = document.getElementById('advancedVisitCounter');
+    const toggleElement = document.getElementById('counterToggle');
+    if (!counterElement || !toggleElement) return;
+    
+    // Initialize data structure
+    let analyticsData = JSON.parse(localStorage.getItem('siteAnalytics') || '{}');
+    if (!analyticsData.visits) analyticsData.visits = 0;
+    if (!analyticsData.uniqueVisitors) analyticsData.uniqueVisitors = [];
+    if (!analyticsData.dailyVisits) analyticsData.dailyVisits = {};
+    if (!analyticsData.visitorId) analyticsData.visitorId = generateVisitorId();
+    
+    // Generate or get visitor ID
+    const visitorId = analyticsData.visitorId;
+    
+    // Update visit counts
+    analyticsData.visits++;
+    
+    // Track unique visitors
+    if (!analyticsData.uniqueVisitors.includes(visitorId)) {
+      analyticsData.uniqueVisitors.push(visitorId);
+    }
+    
+    // Track daily visits
+    const today = new Date().toISOString().split('T')[0];
+    if (!analyticsData.dailyVisits[today]) {
+      analyticsData.dailyVisits[today] = 0;
+    }
+    analyticsData.dailyVisits[today]++;
+    
+    // Store updated data
+    localStorage.setItem('siteAnalytics', JSON.stringify(analyticsData));
+    
+    // Update display
+    updateCounterDisplay(analyticsData);
+    
+    // Toggle functionality
+    toggleElement.addEventListener('click', function() {
+      counterElement.classList.toggle('collapsed');
+    });
+    
+    // Start collapsed on mobile
+    if (window.innerWidth <= 768) {
+      counterElement.classList.add('collapsed');
+    }
+  }
+  
+  function generateVisitorId() {
+    return 'visitor_' + Date.now() + '_' + Math.random().toString(36).substr(2, 9);
+  }
+  
+  function updateCounterDisplay(data) {
+    const totalVisitsElement = document.getElementById('totalVisits');
+    const uniqueVisitorsElement = document.getElementById('uniqueVisitors');
+    const todayVisitsElement = document.getElementById('todayVisits');
+    
+    if (totalVisitsElement) {
+      animateNumber(totalVisitsElement, data.visits);
+    }
+    
+    if (uniqueVisitorsElement) {
+      animateNumber(uniqueVisitorsElement, data.uniqueVisitors.length);
+    }
+    
+    if (todayVisitsElement) {
+      const today = new Date().toISOString().split('T')[0];
+      const todayCount = data.dailyVisits[today] || 0;
+      animateNumber(todayVisitsElement, todayCount);
+    }
+  }
+  
+  function animateNumber(element, finalValue) {
+    const startValue = 0;
+    const duration = 1000;
+    const startTime = performance.now();
+    
+    function updateNumber(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentValue = Math.floor(startValue + (finalValue - startValue) * easeOutQuart);
+      
+      element.textContent = currentValue.toLocaleString();
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateNumber);
+      }
+    }
+    
+    requestAnimationFrame(updateNumber);
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAdvancedVisitCounter);
+  } else {
+    initAdvancedVisitCounter();
+  }
+})();
+</script>
+{% endif %} 

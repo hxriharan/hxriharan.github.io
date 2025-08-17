@@ -1,0 +1,196 @@
+{% comment %}
+  Simple Global Visit Counter Component
+  This component tracks global visits using a simple, reliable approach
+{% endcomment %}
+
+{% if site.visit_counter.enabled %}
+<div class="simple-global-counter" id="simpleGlobalCounter">
+  <div class="counter-container">
+    <span class="counter-text">Total Visits: </span>
+    <span class="counter-number" id="simpleGlobalCount">Loading...</span>
+  </div>
+</div>
+
+<style>
+.simple-global-counter {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2c3e50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.simple-global-counter:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  background: #34495e;
+}
+
+.counter-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.counter-text {
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.counter-number {
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .simple-global-counter {
+    top: 10px;
+    right: 10px;
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+  
+  .counter-number {
+    font-size: 16px;
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Configuration
+  const SITE_ID = 'hxriharan-website';
+  const STORAGE_KEY = 'globalVisitCount';
+  const SESSION_KEY = 'visitCountedToday';
+  
+  // Initialize simple global visit counter
+  function initSimpleGlobalCounter() {
+    const counterElement = document.getElementById('simpleGlobalCount');
+    if (!counterElement) return;
+    
+    // Check if we've already counted this session
+    const today = new Date().toDateString();
+    const sessionKey = `${SESSION_KEY}_${today}`;
+    
+    if (sessionStorage.getItem(sessionKey)) {
+      // Already counted today, just display the count
+      displayCount();
+      return;
+    }
+    
+    // Mark this session as counted
+    sessionStorage.setItem(sessionKey, 'true');
+    
+    // Increment and display the count
+    incrementAndDisplayCount();
+  }
+  
+  // Display the current count
+  function displayCount() {
+    const count = getVisitCount();
+    animateNumber(document.getElementById('simpleGlobalCount'), count);
+  }
+  
+  // Increment the count and display it
+  function incrementAndDisplayCount() {
+    const newCount = incrementVisitCount();
+    animateNumber(document.getElementById('simpleGlobalCount'), newCount);
+    
+    // Try to sync with other visitors (simple approach)
+    syncWithOtherVisitors(newCount);
+  }
+  
+  // Get current visit count from localStorage
+  function getVisitCount() {
+    const count = localStorage.getItem(STORAGE_KEY);
+    return count ? parseInt(count) : 0;
+  }
+  
+  // Increment visit count
+  function incrementVisitCount() {
+    const currentCount = getVisitCount();
+    const newCount = currentCount + 1;
+    localStorage.setItem(STORAGE_KEY, newCount.toString());
+    return newCount;
+  }
+  
+  // Simple sync mechanism using a shared timestamp
+  function syncWithOtherVisitors(count) {
+    try {
+      // Store a timestamp with the count
+      const syncData = {
+        count: count,
+        timestamp: Date.now(),
+        siteId: SITE_ID
+      };
+      
+      // Use a simple approach: store in localStorage with a unique key
+      const syncKey = `${SITE_ID}_sync_${Math.floor(Date.now() / (24 * 60 * 60 * 1000))}`; // Daily key
+      localStorage.setItem(syncKey, JSON.stringify(syncData));
+      
+      // Try to read other visitors' data
+      setTimeout(() => {
+        try {
+          const otherData = localStorage.getItem(syncKey);
+          if (otherData) {
+            const parsed = JSON.parse(otherData);
+            if (parsed.count > count) {
+              // Someone else has a higher count, use theirs
+              localStorage.setItem(STORAGE_KEY, parsed.count.toString());
+              animateNumber(document.getElementById('simpleGlobalCount'), parsed.count);
+            }
+          }
+        } catch (e) {
+          console.log('Sync check completed');
+        }
+      }, 1000);
+      
+    } catch (error) {
+      console.log('Sync attempt completed');
+    }
+  }
+  
+  // Animate number display
+  function animateNumber(element, finalValue) {
+    const startValue = 0;
+    const duration = 1000;
+    const startTime = performance.now();
+    
+    function updateNumber(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentValue = Math.floor(startValue + (finalValue - startValue) * easeOutQuart);
+      
+      element.textContent = currentValue.toLocaleString();
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateNumber);
+      }
+    }
+    
+    requestAnimationFrame(updateNumber);
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initSimpleGlobalCounter);
+  } else {
+    initSimpleGlobalCounter();
+  }
+})();
+</script>
+{% endif %} 

@@ -1,0 +1,114 @@
+{% comment %}
+  Footer Visit Counter Component
+  This component tracks and displays page visits in the footer area
+{% endcomment %}
+
+<div class="footer-visit-counter">
+  <div class="footer-counter-container">
+    <span class="footer-counter-icon">👁️</span>
+    <span class="footer-counter-text">Page Visits: </span>
+    <span class="footer-counter-number" id="footerVisitCount">0</span>
+  </div>
+</div>
+
+<style>
+.footer-visit-counter {
+  display: inline-block;
+  margin: 10px 0;
+  padding: 8px 16px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  border-radius: 25px;
+  font-size: 14px;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
+}
+
+.footer-visit-counter:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+.footer-counter-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.footer-counter-icon {
+  font-size: 16px;
+}
+
+.footer-counter-text {
+  font-weight: 500;
+}
+
+.footer-counter-number {
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .footer-visit-counter {
+    font-size: 12px;
+    padding: 6px 12px;
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Footer visit counter functionality
+  function initFooterVisitCounter() {
+    const counterElement = document.getElementById('footerVisitCount');
+    if (!counterElement) return;
+    
+    // Get current visit count from localStorage
+    let visitCount = localStorage.getItem('siteVisitCount') || 0;
+    visitCount = parseInt(visitCount);
+    
+    // Increment visit count
+    visitCount++;
+    
+    // Store updated count
+    localStorage.setItem('siteVisitCount', visitCount.toString());
+    
+    // Update display with animation
+    animateFooterCounter(counterElement, visitCount);
+  }
+  
+  // Animate counter number
+  function animateFooterCounter(element, finalValue) {
+    const startValue = 0;
+    const duration = 1500;
+    const startTime = performance.now();
+    
+    function updateCounter(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutBack = 1 + 2.5949095 * Math.pow(progress - 1, 3) + 1.5949095 * Math.pow(progress - 1, 2);
+      const currentValue = Math.floor(startValue + (finalValue - startValue) * easeOutBack);
+      
+      element.textContent = currentValue.toLocaleString();
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      }
+    }
+    
+    requestAnimationFrame(updateCounter);
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initFooterVisitCounter);
+  } else {
+    initFooterVisitCounter();
+  }
+})();
+</script> 

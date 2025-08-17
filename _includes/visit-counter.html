@@ -1,0 +1,153 @@
+{% comment %}
+  Visit Counter Component
+  This component tracks and displays page visits using localStorage and optional external analytics
+{% endcomment %}
+
+{% if site.visit_counter.enabled %}
+<div class="visit-counter" id="visitCounter">
+  <div class="counter-container">
+    <span class="counter-text">Visits: </span>
+    <span class="counter-number" id="visitCount">0</span>
+  </div>
+</div>
+
+<style>
+.visit-counter {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  background: #2c3e50;
+  color: white;
+  padding: 12px 20px;
+  border-radius: 25px;
+  font-size: 16px;
+  font-weight: bold;
+  z-index: 1000;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  transition: all 0.3s ease;
+  border: 2px solid rgba(255, 255, 255, 0.1);
+}
+
+.visit-counter:hover {
+  transform: translateY(-3px) scale(1.05);
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.4);
+  background: #34495e;
+}
+
+.counter-container {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.counter-text {
+  font-weight: 600;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+.counter-number {
+  font-weight: bold;
+  color: #FFD700;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+  font-size: 18px;
+}
+
+@media (max-width: 768px) {
+  .visit-counter {
+    top: 10px;
+    right: 10px;
+    font-size: 14px;
+    padding: 10px 16px;
+  }
+  
+  .counter-number {
+    font-size: 16px;
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Visit counter functionality
+  function initVisitCounter() {
+    const counterElement = document.getElementById('visitCount');
+    if (!counterElement) return;
+    
+    // Get current visit count from localStorage
+    let visitCount = localStorage.getItem('siteVisitCount') || 0;
+    visitCount = parseInt(visitCount);
+    
+    // Increment visit count
+    visitCount++;
+    
+    // Store updated count
+    localStorage.setItem('siteVisitCount', visitCount.toString());
+    
+    // Update display with animation
+    animateCounter(counterElement, visitCount);
+    
+    // Optional: Send analytics data to external service
+    if (typeof sendAnalyticsData === 'function') {
+      sendAnalyticsData({
+        type: 'page_visit',
+        count: visitCount,
+        page: window.location.pathname,
+        timestamp: new Date().toISOString()
+      });
+    }
+  }
+  
+  // Animate counter number
+  function animateCounter(element, finalValue) {
+    const startValue = 0;
+    const duration = 1000;
+    const startTime = performance.now();
+    
+    function updateCounter(currentTime) {
+      const elapsed = currentTime - startTime;
+      const progress = Math.min(elapsed / duration, 1);
+      
+      // Easing function for smooth animation
+      const easeOutQuart = 1 - Math.pow(1 - progress, 4);
+      const currentValue = Math.floor(startValue + (finalValue - startValue) * easeOutQuart);
+      
+      element.textContent = currentValue.toLocaleString();
+      
+      if (progress < 1) {
+        requestAnimationFrame(updateCounter);
+      }
+    }
+    
+    requestAnimationFrame(updateCounter);
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initVisitCounter);
+  } else {
+    initVisitCounter();
+  }
+  
+  // Optional: Analytics data sender (can be customized for different services)
+  window.sendAnalyticsData = function(data) {
+    // Example: Send to Google Analytics
+    if (typeof gtag !== 'undefined') {
+      gtag('event', 'page_visit', {
+        event_category: 'engagement',
+        event_label: data.page,
+        value: data.count
+      });
+    }
+    
+    // Example: Send to custom endpoint
+    // fetch('/api/analytics', {
+    //   method: 'POST',
+    //   headers: { 'Content-Type': 'application/json' },
+    //   body: JSON.stringify(data)
+    // }).catch(console.error);
+  };
+})();
+</script>
+{% endif %} 

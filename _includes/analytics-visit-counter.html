@@ -1,0 +1,129 @@
+{% if site.visit_counter.enabled %}
+<!-- Analytics-based Visit Counter -->
+<div class="analytics-visit-counter" id="analyticsVisitCounter">
+  <div class="counter-content">
+    <i class="fas fa-eye"></i>
+    <span class="counter-label">Visits</span>
+    <span class="counter-number" id="analyticsVisitCount">-</span>
+  </div>
+</div>
+
+<style>
+.analytics-visit-counter {
+  position: fixed;
+  bottom: 20px;
+  right: 20px;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: white;
+  padding: 12px 16px;
+  border-radius: 25px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  font-size: 14px;
+  z-index: 1000;
+  transition: all 0.3s ease;
+  cursor: pointer;
+  backdrop-filter: blur(10px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.analytics-visit-counter:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.3);
+  background: linear-gradient(135deg, #764ba2 0%, #667eea 100%);
+}
+
+.counter-content {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.counter-content i {
+  font-size: 16px;
+  color: #ffd700;
+}
+
+.counter-label {
+  font-weight: 500;
+  opacity: 0.9;
+}
+
+.counter-number {
+  font-weight: bold;
+  font-size: 16px;
+  color: #ffffff;
+  text-shadow: 0 1px 2px rgba(0, 0, 0, 0.3);
+}
+
+@media (max-width: 768px) {
+  .analytics-visit-counter {
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 14px;
+    font-size: 12px;
+  }
+  
+  .counter-number {
+    font-size: 14px;
+  }
+}
+</style>
+
+<script>
+(function() {
+  'use strict';
+  
+  // Analytics-based visit counter functionality
+  function initAnalyticsVisitCounter() {
+    const counterElement = document.getElementById('analyticsVisitCount');
+    if (!counterElement) return;
+    
+    // Check if Google Analytics is configured
+    const hasAnalytics = typeof gtag !== 'undefined' && '{{site.analytics.google.tracking_id}}' !== 'G-XXXXXXXXXX';
+    
+    if (hasAnalytics) {
+      // Google Analytics is set up - track page view
+      gtag('event', 'page_view', {
+        page_title: document.title,
+        page_location: window.location.href,
+        page_path: window.location.pathname
+      });
+      
+      // Show analytics status
+      counterElement.textContent = 'Live';
+      counterElement.style.color = '#4CAF50';
+      
+      // Add click handler to open Google Analytics
+      const counterContainer = document.getElementById('analyticsVisitCounter');
+      if (counterContainer) {
+        counterContainer.addEventListener('click', function() {
+          window.open('https://analytics.google.com/', '_blank');
+        });
+        counterContainer.title = 'Click to view Google Analytics';
+      }
+    } else {
+      // No Google Analytics - show setup instructions
+      counterElement.textContent = 'Setup';
+      counterElement.style.color = '#FF9800';
+      
+      // Add click handler to show setup instructions
+      const counterContainer = document.getElementById('analyticsVisitCounter');
+      if (counterContainer) {
+        counterContainer.addEventListener('click', function() {
+          alert('To enable real visitor tracking:\n\n1. Go to https://analytics.google.com/\n2. Create a new property for your website\n3. Get your tracking ID (starts with G-)\n4. Update _config.yml with your tracking ID\n5. Replace "G-XXXXXXXXXX" with your actual ID');
+        });
+        counterContainer.title = 'Click for setup instructions';
+      }
+    }
+  }
+  
+  // Initialize when DOM is ready
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initAnalyticsVisitCounter);
+  } else {
+    initAnalyticsVisitCounter();
+  }
+})();
+</script>
+{% endif %} 

@@ -147,9 +147,9 @@ social:
 
 # Analytics
 analytics:
-  provider               :  "false" # false (default), "google", "google-universal", "google-analytics-4", "custom"
+  provider               : "google-analytics-4" # false (default), "google", "google-universal", "google-analytics-4", "custom"
   google:
-    tracking_id          :
+    tracking_id          : "G-XXXXXXXXXX" # Replace with your actual GA4 tracking ID
 
 
 # Reading Files
@@ -370,3 +370,4 @@ visit_counter:
   position: "floating" # "floating" or "footer"
   show_icon: true
   animation: true
+  use_analytics: true # Use Google Analytics instead of localStorage

@@ -3,7 +3,7 @@ title: "Retinex Illumination Estimation: Zhang 2011 Paper Replication"
 collection: projects
 permalink: /projects/retinex-illumination-estimation
 excerpt: 'A complete replication of the 2011 Zhang et al. paper on Retinex theory and intrinsic image decomposition for illumination estimation.'
-date: 2025-07-10
+date: Released on 2025-07-10
 image: 
   path: &image /images/retinex-illumination.jpg
   teaser: /images/retinex-illumination-teaser.jpg

@@ -2,7 +2,7 @@
 title: "Classical Computer Vision Interactive Web Interface"
 collection: projects
 permalink: /projects/classical-cv-interactive
-excerpt: 'A comprehensive interactive web application for testing and visualizing classical computer vision algorithms with real-time image processing capabilities. **Will be adding a video to this soon!**'
+excerpt: 'A comprehensive interactive web application for testing and visualizing classical computer vision algorithms with real-time image processing capabilities. Will be adding a video to this soon!'
 date: Released on 2025-08-19
 image: 
   path: &image /images/classical-cv.jpg

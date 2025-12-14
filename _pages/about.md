@@ -19,6 +19,33 @@ Previously, I was an R&D Intern at [Indrones Solutions](https://indrones.com/){:
 
 I earned my Bachelor of Technology in Computer Engineering from [DY Patil University](https://dypatil.edu/schools/ramrao-adik-institute-of-technology){:target="_blank"}, Navi Mumbai, with a focus on computer vision, machine learning, algorithms, and robotics. During my undergraduate studies, I co-authored two research papers: "Cygnus: A Vision-Based Drone System for Drowning Detection Using IoT", under the supervision of [Dr. Prasiddh Kismatkumar Trivedi](https://gsv.ac.in/faculties/dr-prasiddh-kismatkumar-trivedi/){:target="_blank"} and "Optimizing Computational Load and Energy Efficiency in UAV-Based Port Surveillance Systems", under the supervision of [Dr. Gajanan Birajdar](https://vidwan.inflibnet.ac.in/profile/179809){:target="_blank"}
 
+
+<!--
+## Career Timeline & Life Events
+
+### 2025
+- **Fall 2025**: Started Robotics Software Developer Internship at Black-I Robotics
+- **Summer 2025**: Joined NeuMove Lab as Graduate Researcher under Prof. Seungmoon Song
+
+### 2024
+- **Fall 2024**: Started MS in Robotics at Northeastern University, Khoury College of Computer Sciences
+- **Summer 2024**: Completed R&D Internship at Indrones Solutions
+- **Research**: Co-authored "Optimizing Computational Load and Energy Efficiency in UAV-Based Port Surveillance Systems"
+
+### 2023
+- **Graduated**: Bachelor of Technology in Computer Engineering from DY Patil University
+- **Research**: Co-authored "Cygnus: A Vision-Based Drone System for Drowning Detection Using IoT"
+
+### 2022
+- **Research**: Began undergraduate research projects in computer vision and UAV systems
+
+### 2020
+- **Started**: Bachelor of Technology in Computer Engineering at DY Patil University
+
+---
+
+*This timeline is regularly updated with new achievements, publications, and career milestones.* -->
+
 <!-- 
 A data-driven personal website
 ======
